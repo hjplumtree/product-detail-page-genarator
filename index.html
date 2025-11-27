@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail Page Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Product Detail Page Generator</h1>
+    </header>
+    <main class="container">
+        <div class="editor-panel">
+            <h2>HTML Editor</h2>
+            <textarea id="html-editor" placeholder="Enter your HTML code here...">
+<div class="product-card">
+    <h2>Sample Product</h2>
+    <img src="https://via.placeholder.com/200" alt="Product Image">
+    <p class="price">$99.99</p>
+    <p class="description">This is a sample product description. Edit this HTML to see live changes!</p>
+    <button>Add to Cart</button>
+</div>
+            </textarea>
+        </div>
+        <div class="preview-panel">
+            <h2>Live Preview</h2>
+            <iframe id="preview-frame" title="Preview"></iframe>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
