@@ -90,12 +90,27 @@ const TEMPLATES = `
     -->
 
 
-    <!-- 03. PRODUCT IMAGES -->
-    <div style="margin-top: 40px; text-align: center;">
-        <div style="margin-bottom: 18px">{{image_overview}}</div>
-        <div style="margin-bottom: 18px">{{image_details}}</div>
-        <div style="margin-bottom: 18px">{{image_specs}}</div>
-    </div>
+   <!-- 03. PRODUCT IMAGES -->
+		<div style="margin-top: 40px; text-align: center;">
+		    <!-- Overview Images (2) -->
+		    <img src="{{image_overview_01}}" 
+		         style="width: 100%; margin-bottom: 18px; border-radius: 6px;" />
+		
+		    <img src="{{image_overview_02}}" 
+		         style="width: 100%; margin-bottom: 18px; border-radius: 6px;" />
+		
+		    <!-- Detail Images (2) -->
+		    <img src="{{image_details_01}}" 
+		         style="width: 100%; margin-bottom: 18px; border-radius: 6px;" />
+		
+		    <img src="{{image_details_02}}" 
+		         style="width: 100%; margin-bottom: 18px; border-radius: 6px;" />
+		
+		    <!-- Specs Image (1) -->
+		    <img src="{{image_specs}}" 
+		         style="width: 100%; margin-bottom: 18px; border-radius: 6px;" />
+		</div>
+
 
     <!-- 04. KEY VALUE (핵심 장점: 3개) -->
     <div style="margin-top: 40px">
@@ -284,6 +299,4 @@ const TEMPLATES = `
         </div>
     </div>
 </div>
- 
-
-`;
+ `;
