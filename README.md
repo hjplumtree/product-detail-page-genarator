@@ -2,13 +2,15 @@
 
 A simple, clean tool for building product pages by merging HTML templates with JSON data.
 
-## Features
+## ✨ Features
 
 - **Template Editor**: Edit HTML templates with `{{placeholder}}` syntax
 - **JSON Data Editor**: Manage product data in clean JSON format
 - **Live Preview**: Real-time preview of generated pages
 - **HTML Export**: View and copy generated HTML code
-- **Responsive Design**: Works on desktop and mobile
+- **Dark Mode**: Toggle between light and dark themes
+- **Responsive Design**: Works seamlessly on desktop and mobile
+- **Auto-save**: Theme preference saved in localStorage
 
 ## How to Use
 
@@ -38,10 +40,7 @@ Use `{{placeholder}}` syntax in your HTML template:
     "Brand": "Brand Name",
     "Model": "Model Number"
   },
-  "features": [
-    "Feature 1",
-    "Feature 2"
-  ]
+  "features": ["Feature 1", "Feature 2"]
 }
 ```
 
