@@ -1,63 +1,150 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const htmlEditor = document.getElementById('html-editor');
-    const previewFrame = document.getElementById('preview-frame');
-    
-    // Update preview function
-    // Note: This editor intentionally renders user-provided HTML in the preview iframe.
-    // This is the expected behavior for a live HTML preview tool.
-    // The iframe is sandboxed on the same origin for this local development tool.
-    function updatePreview() {
-        const htmlContent = htmlEditor.value;
-        const previewDocument = previewFrame.contentDocument || previewFrame.contentWindow.document;
-        
-        // Create a complete HTML document with basic styling
-        const fullHtml = `
+document.addEventListener("DOMContentLoaded", function () {
+  // DOM Elements
+  const templateEditor = document.getElementById("template-editor");
+  const jsonEditor = document.getElementById("json-editor");
+  const previewFrame = document.getElementById("preview-frame");
+  const mergeBtn = document.getElementById("merge-btn");
+  const clearBtn = document.getElementById("clear-btn");
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  // Tab switching functionality
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const tabName = this.getAttribute("data-tab");
+
+      // Remove active class from all tabs and contents
+      tabBtns.forEach((b) => b.classList.remove("active"));
+      tabContents.forEach((c) => c.classList.remove("active"));
+
+      // Add active class to clicked tab and corresponding content
+      this.classList.add("active");
+      document.getElementById(tabName + "-tab").classList.add("active");
+    });
+  });
+
+  // 상세 스펙 테이블에서 숨길 필드들만 설정
+  const hideEmptySpecFields = [
+    "weight",
+    "material",
+    "components",
+    "model_number",
+    "size_info",
+  ];
+
+  // 값이 비어있는지 체크하는 함수
+  function isEmpty(value) {
+    return (
+      value === null ||
+      value === undefined ||
+      value === "" ||
+      (Array.isArray(value) && value.length === 0) ||
+      (typeof value === "string" && value.trim() === "")
+    );
+  }
+
+  // Template merging function
+  function mergeTemplate() {
+    try {
+      const template = templateEditor.value.trim();
+      const jsonData = jsonEditor.value.trim();
+
+      if (!template) {
+        alert("Please enter a template");
+        return;
+      }
+
+      if (!jsonData) {
+        alert("Please enter JSON data");
+        return;
+      }
+
+      // Parse JSON data
+      let data;
+      try {
+        data = JSON.parse(jsonData);
+      } catch (e) {
+        alert("Invalid JSON format. Please check your JSON data.");
+        return;
+      }
+
+      let mergedHtml = template;
+
+      // 1단계: 일반 placeholder 처리
+      Object.keys(data).forEach((key) => {
+        const placeholder = `{{${key}}}`;
+        let value = data[key];
+
+        // Handle arrays (like key_value_list, feature_list)
+        if (Array.isArray(value)) {
+          const listItems = value
+            .map((item) => `<li>${item}</li>`)
+            .join("\n            ");
+          value = listItems;
+        }
+
+        // 빈 값 처리
+        if (isEmpty(data[key])) {
+          value = "";
+        }
+
+        // Replace all occurrences of the placeholder
+        mergedHtml = mergedHtml.replace(new RegExp(placeholder, "g"), value);
+      });
+
+      // 2단계: 상세 스펙 테이블에서 빈 필드의 해당 행만 제거
+      hideEmptySpecFields.forEach((field) => {
+        if (isEmpty(data[field])) {
+          const fieldDisplayName = getFieldDisplayName(field);
+          // 정확한 필드명과 placeholder를 포함한 tr 행을 찾아서 제거
+          const trPattern = `<tr[^>]*>\\s*<th[^>]*[^<]*${fieldDisplayName}[^<]*</th>\\s*<td[^>]*>[^<]*</td>\\s*</tr>`;
+          const trRegex = new RegExp(trPattern, "gi");
+          mergedHtml = mergedHtml.replace(trRegex, "");
+        }
+      });
+
+      // Update preview
+      updatePreview(mergedHtml);
+    } catch (error) {
+      console.error("Error merging template:", error);
+      alert(
+        "Error merging template. Please check your template and JSON data."
+      );
+    }
+  }
+
+  // 필드 한글명 매칭 함수 (확장 가능)
+  function getFieldDisplayName(field) {
+    const fieldNames = {
+      weight: "무게",
+      material: "소재",
+      components: "구성품",
+      model_number: "모델명",
+      size_info: "사이즈",
+      brand: "브랜드",
+      category: "카테고리",
+    };
+    return fieldNames[field] || field;
+  }
+
+  // Update preview function
+  function updatePreview(htmlContent) {
+    const previewDocument =
+      previewFrame.contentDocument || previewFrame.contentWindow.document;
+
+    const fullHtml = `
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
                     body {
-                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                        padding: 20px;
                         margin: 0;
-                        line-height: 1.6;
-                    }
-                    .product-card {
-                        max-width: 300px;
                         padding: 20px;
-                        border: 1px solid #ddd;
-                        border-radius: 8px;
-                        text-align: center;
-                    }
-                    .product-card img {
-                        max-width: 100%;
-                        border-radius: 4px;
-                    }
-                    .product-card h2 {
-                        margin: 10px 0;
-                        color: #333;
-                    }
-                    .product-card .price {
-                        font-size: 1.5rem;
-                        color: #e63946;
-                        font-weight: bold;
-                    }
-                    .product-card .description {
-                        color: #666;
-                        margin: 10px 0;
-                    }
-                    .product-card button {
-                        background-color: #2563eb;
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-size: 1rem;
-                    }
-                    .product-card button:hover {
-                        background-color: #1d4ed8;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        line-height: 1.6;
+                        background-color: #f5f5f5;
                     }
                 </style>
             </head>
@@ -66,15 +153,32 @@ document.addEventListener('DOMContentLoaded', function() {
             </body>
             </html>
         `;
-        
-        previewDocument.open();
-        previewDocument.write(fullHtml);
-        previewDocument.close();
+
+    previewDocument.open();
+    previewDocument.write(fullHtml);
+    previewDocument.close();
+  }
+
+  // Clear all function
+  function clearAll() {
+    if (confirm("Are you sure you want to clear all content?")) {
+      templateEditor.value = "";
+      jsonEditor.value = "";
+      updatePreview(
+        '<div style="text-align: center; padding: 50px; color: #999;">Enter template and JSON data, then click "Merge Template"</div>'
+      );
     }
-    
-    // Listen for input changes and update preview instantly
-    htmlEditor.addEventListener('input', updatePreview);
-    
-    // Initial preview update
-    updatePreview();
+  }
+
+  // Event listeners
+  mergeBtn.addEventListener("click", mergeTemplate);
+  clearBtn.addEventListener("click", clearAll);
+
+  // Initial preview
+  updatePreview(
+    '<div style="text-align: center; padding: 50px; color: #999;">Enter template and JSON data, then click "Merge Template"</div>'
+  );
+
+  // Initial merge with sample data
+  setTimeout(mergeTemplate, 100);
 });
