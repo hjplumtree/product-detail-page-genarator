@@ -1,26 +1,26 @@
-// ===============================================
+// // Configuration removed - using direct template and data access==========================================
 //              CONFIGURATION
 // ===============================================
 const CONFIG = {
   // 기본 사용할 템플릿과 데이터
-  DEFAULT_TEMPLATE: "korean_ecommerce",
-  DEFAULT_DATA: "korean_rainsuit",
+  DEFAULT_TEMPLATE: "template_basic",
+  DEFAULT_DATA: "sample_basic",
 };
 
 // ===============================================
 //              STYLE CONFIGURATIONS
 // ===============================================
 const STYLE_PRESETS = {
-  // key_value_list 스타일 (정확히 지시된 스타일만)
-  enhancedListItem: {
+  // 기본 리스트 아이템 스타일
+  listItem: {
     margin: "6px 0",
     paddingLeft: "8px",
     fontSize: "15px",
     color: "#333",
   },
 
-  // 기능 박스 스타일 (feature boxes with icons)
-  featureBox: {
+  // 강조된 박스 스타일 (아이콘 포함)
+  highlightBox: {
     padding: "8px 12px",
     background: "#f8f9fa",
     margin: "6px 0",
@@ -36,7 +36,7 @@ const STYLE_PRESETS = {
     borderBottom: "1px solid #eee",
   },
 
-  // 테이블 셀 스타일
+  // 테이블 데이터 셀 스타일
   tableCell: {
     padding: "12px 16px",
   },
@@ -61,8 +61,8 @@ function styleObjectToCss(styleObj) {
     .join("; ");
 }
 
-// 범용 리스트 아이템 생성기
-function createStyledListItem(content, stylePreset = null, icon = null) {
+// HTML 리스트 아이템 생성 유틸리티
+function createListItem(content, stylePreset = null, icon = null) {
   const iconPrefix = icon ? `${icon} ` : "";
   const styleAttr = stylePreset
     ? ` style="${styleObjectToCss(stylePreset)}"`
@@ -70,8 +70,8 @@ function createStyledListItem(content, stylePreset = null, icon = null) {
   return `<li${styleAttr}>${iconPrefix}${content}</li>`;
 }
 
-// 범용 박스 요소 생성기
-function createStyledBox(content, stylePreset = null, icon = null) {
+// HTML 컨테이너 요소 생성 유틸리티
+function createContainer(content, stylePreset = null, icon = null) {
   const iconPrefix = icon ? `${icon} ` : "";
   const styleAttr = stylePreset
     ? ` style="${styleObjectToCss(stylePreset)}"`
@@ -79,8 +79,8 @@ function createStyledBox(content, stylePreset = null, icon = null) {
   return `<div${styleAttr}>${iconPrefix}${content}</div>`;
 }
 
-// 범용 테이블 행 생성기
-function createStyledTableRow(cells, rowStyle = null, cellStyles = []) {
+// HTML 테이블 행 생성 유틸리티
+function createTableRow(cells, rowStyle = null, cellStyles = []) {
   const rowStyleAttr = rowStyle ? ` style="${styleObjectToCss(rowStyle)}"` : "";
 
   const cellsHtml = cells
@@ -99,7 +99,7 @@ function createStyledTableRow(cells, rowStyle = null, cellStyles = []) {
 // ===============================================
 //              MAIN APPLICATION
 // ===============================================
-class ProductPageGenerator {
+class TemplateProcessor {
   constructor() {
     this.elements = {
       templateEditor: document.getElementById("template-editor"),
@@ -172,14 +172,8 @@ class ProductPageGenerator {
 
   // Load default template and data
   loadDefaultContent() {
-    // 외부 파일의 템플릿과 샘플 데이터 사용
-    this.elements.templateEditor.value =
-      TEMPLATES[CONFIG.DEFAULT_TEMPLATE] || TEMPLATES.korean_ecommerce;
-    this.elements.dataEditor.value = JSON.stringify(
-      SAMPLE_DATA[CONFIG.DEFAULT_DATA] || SAMPLE_DATA.korean_rainsuit,
-      null,
-      2
-    );
+    this.elements.templateEditor.value = TEMPLATES;
+    this.elements.dataEditor.value = JSON.stringify(SAMPLE_DATA, null, 2);
   }
 
   // Event listeners
@@ -260,13 +254,13 @@ class ProductPageGenerator {
       const placeholder = `{{${key}}}`;
       let value = data[key];
 
-      // Handle special cases
+      // Handle special data type rendering
       if (key === "specs" && Array.isArray(value)) {
-        value = this.generateSpecsTable(value, useDynamicStyles);
+        value = this.generateDataTable(value, useDynamicStyles);
       } else if (key === "key_value_list" && Array.isArray(value)) {
-        value = this.generateEnhancedList(value, useDynamicStyles);
+        value = this.generateBasicList(value, useDynamicStyles);
       } else if (key === "feature_list" && Array.isArray(value)) {
-        value = this.generateFeatureList(value, useDynamicStyles);
+        value = this.generateHighlightList(value, useDynamicStyles);
       } else if (Array.isArray(value)) {
         value = value.join(", ");
       } else if (typeof value === "object" && value !== null) {
@@ -277,15 +271,15 @@ class ProductPageGenerator {
     });
 
     // Hide rows for missing data
-    html = this.hideMissingSpecs(html);
+    html = this.hideMissingData(html);
 
     this.generatedHTML = html;
     return html;
   }
 
-  generateSpecsTable(specs, useDynamicStyles = true) {
-    return specs
-      .map((spec) => {
+  generateDataTable(data, useDynamicStyles = true) {
+    return data
+      .map((item) => {
         if (useDynamicStyles) {
           const rowStyle = styleObjectToCss(STYLE_PRESETS.tableRow);
           const headerStyle = styleObjectToCss(STYLE_PRESETS.tableHeaderCell);
@@ -293,47 +287,47 @@ class ProductPageGenerator {
 
           return `
         <tr style="${rowStyle}">
-          <td style="${headerStyle}">${spec.label}</td>
-          <td style="${cellStyle}">${spec.value}</td>
+          <td style="${headerStyle}">${item.label}</td>
+          <td style="${cellStyle}">${item.value}</td>
         </tr>`;
         } else {
           return `
         <tr>
-          <td>${spec.label}</td>
-          <td>${spec.value}</td>
+          <td>${item.label}</td>
+          <td>${item.value}</td>
         </tr>`;
         }
       })
       .join("");
   }
 
-  generateEnhancedList(items, useDynamicStyles = true) {
+  generateBasicList(items, useDynamicStyles = true) {
     return items
       .filter((item) => item && item.trim())
       .map((item) => {
         if (useDynamicStyles) {
-          return createStyledListItem(item, STYLE_PRESETS.enhancedListItem);
+          return createListItem(item, STYLE_PRESETS.listItem);
         } else {
-          return createStyledListItem(item);
+          return createListItem(item);
         }
       })
       .join("");
   }
 
-  generateFeatureList(features, useDynamicStyles = true) {
-    return features
-      .filter((feature) => feature && feature.trim())
-      .map((feature) => {
+  generateHighlightList(items, useDynamicStyles = true) {
+    return items
+      .filter((item) => item && item.trim())
+      .map((item) => {
         if (useDynamicStyles) {
-          return createStyledListItem(feature, STYLE_PRESETS.featureBox, "✓");
+          return createListItem(item, STYLE_PRESETS.highlightBox, "✓");
         } else {
-          return createStyledListItem(feature);
+          return createListItem(item);
         }
       })
       .join("");
   }
 
-  hideMissingSpecs(html) {
+  hideMissingData(html) {
     // Remove table rows that still contain placeholders
     return html.replace(/<tr[^>]*>.*?{{[^}]+}}.*?<\/tr>/gs, "");
   }
@@ -387,5 +381,5 @@ class ProductPageGenerator {
 //              INITIALIZATION
 // ===============================================
 document.addEventListener("DOMContentLoaded", () => {
-  new ProductPageGenerator();
+  new TemplateProcessor();
 });
