@@ -62,6 +62,36 @@ Use `{{placeholder}}` syntax in your HTML template:
 
 No server required - works directly from file system.
 
+## Deployment
+
+### Quick Deploy with Vercel (Recommended)
+
+1. Visit [vercel.com](https://vercel.com)
+2. Sign up/Login with your GitHub account
+3. Click "New Project"
+4. Import your GitHub repository
+5. Click "Deploy" - that's it!
+
+Your site will be live at: `https://your-project-name.vercel.app`
+
+### Alternative: Netlify
+
+1. Visit [netlify.com](https://netlify.com)
+2. Sign up/Login with GitHub
+3. Click "New site from Git"
+4. Select your repository
+5. Click "Deploy site"
+
+### Alternative: GitHub Pages
+
+1. Go to your repository on GitHub
+2. Settings → Pages
+3. Source: Deploy from a branch
+4. Branch: main/master
+5. Save
+
+Your site will be live at: `https://username.github.io/repository-name`
+
 ## License
 
 MIT License
