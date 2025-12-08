@@ -1,80 +1,68 @@
-# Product Detail Page Generator
+# Product Page Builder
 
-A simple web-based HTML editor for creating product pages with live preview. No setup required - just open and start coding.
+A simple, clean tool for building product pages by merging HTML templates with JSON data.
 
 ## Features
 
-- ✅ Live HTML preview as you type
-- ✅ Dark theme editor interface
-- ✅ Mobile responsive design
-- ✅ No dependencies - pure HTML/CSS/JS
-- ✅ Pre-built product card styles
+- **Template Editor**: Edit HTML templates with `{{placeholder}}` syntax
+- **JSON Data Editor**: Manage product data in clean JSON format
+- **Live Preview**: Real-time preview of generated pages
+- **HTML Export**: View and copy generated HTML code
+- **Responsive Design**: Works on desktop and mobile
 
-## Quick Start
+## How to Use
 
-**Option 1: Direct Use**
+1. **Edit Template**: Modify the HTML template using `{{placeholder}}` syntax
+2. **Update Data**: Edit JSON data in the data tab
+3. **Preview**: See real-time results in the preview tab
+4. **Export**: Switch to HTML Code tab and copy the generated code
 
-```bash
-# Download and open
-open index.html
-```
+## Template Syntax
 
-**Option 2: Local Server**
-
-```bash
-python3 -m http.server 8000
-# Visit http://localhost:8000
-```
-
-## Usage
-
-1. Open `index.html` in your browser
-2. Edit HTML in the left panel
-3. See live preview on the right
-
-**Sample HTML:**
+Use `{{placeholder}}` syntax in your HTML template:
 
 ```html
-<div class="product-card">
-  <h2>Product Name</h2>
-  <img src="image.jpg" alt="Product" />
-  <p class="price">$99.99</p>
-  <p class="description">Product description...</p>
-  <button>Add to Cart</button>
-</div>
+<h1>{{product_title}}</h1>
+<p>{{description}}</p>
+<img src="{{main_image}}" />
 ```
 
-**Built-in CSS Classes:**
+## JSON Structure
 
-- `.product-card` - Main container
-- `.price` - Price styling
-- `.description` - Description text
-
-## Customization
-
-Edit `styles.css` for themes:
-
-```css
-:root {
-  --bg-primary: #1e1e1e;
-  --bg-secondary: #2d2d2d;
-  --text-primary: #fff;
+```json
+{
+  "product_title": "Your Product Name",
+  "description": "Product description",
+  "main_image": "https://example.com/image.jpg",
+  "specs": {
+    "Brand": "Brand Name",
+    "Model": "Model Number"
+  },
+  "features": [
+    "Feature 1",
+    "Feature 2"
+  ]
 }
 ```
 
-## Deployment
+## File Structure
 
-**GitHub Pages:** Push to GitHub → Settings → Pages → Deploy
+```
+├── index.html    # Main application
+├── styles.css    # Styling
+├── script.js     # Application logic
+└── README.md     # Documentation
+```
 
-**Local Server:** Any static file server works
+## Browser Support
 
-## Contributing
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- Mobile browsers
 
-1. Fork the repo
-2. Create feature branch
-3. Make changes
-4. Submit pull request
+No server required - works directly from file system.
 
 ## License
 
-MIT License - see LICENSE file
+MIT License
