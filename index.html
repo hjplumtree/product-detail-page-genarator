@@ -14,13 +14,20 @@
           <h1>Product Page Builder</h1>
           <p>Build product pages by merging HTML templates with JSON data</p>
         </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          aria-label="Toggle dark mode"
-        >
-          <span class="theme-toggle-icon">🌙</span>
-        </button>
+        <div class="header-controls">
+          <div class="style-toggle">
+            <label for="dynamic-style-toggle">Dynamic Styles:</label>
+            <input type="checkbox" id="dynamic-style-toggle" checked>
+            <span class="toggle-label">ON</span>
+          </div>
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Toggle dark mode"
+          >
+            <span class="theme-toggle-icon">🌙</span>
+          </button>
+        </div>
       </div>
     </header>
 
