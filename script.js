@@ -13,7 +13,7 @@ const CONFIG = {
 const STYLE_PRESETS = {
   // 기본 리스트 아이템 스타일
   listItem: {
-    margin: "6px 0",
+    margin: "8px 0",
     paddingLeft: "8px",
     fontSize: "15px",
     color: "#333",
@@ -23,9 +23,9 @@ const STYLE_PRESETS = {
   highlightBox: {
     padding: "8px 12px",
     background: "#f8f9fa",
-    margin: "6px 0",
+    margin: "10px 0",
     borderRadius: "4px",
-    borderLeft: "3px solid #1b3b6f",
+    borderLeft: "2px solid #1b3b6f",
     listStyle: "none",
     fontSize: "15px",
     color: "#333",
