@@ -27,7 +27,6 @@ const TEMPLATES = `
 
     <!-- ============================== -->
     <!-- 00-1. KEY VALUE SUMMARY (핵심 요약) -->
-    <!-- 상단 마진 10px → 16px (UX 미세 조정) -->
     <!-- ============================== -->
     <div
         style="
@@ -118,7 +117,7 @@ const TEMPLATES = `
     </div>
 
     <!-- ============================== -->
-    <!-- 04. KEY VALUE (핵심 장점) -->
+    <!-- 04. KEY VALUE (핵심 장점) 최대 3개 -->
     <!-- ============================== -->
     <div style="margin-top: 40px;">
         <div
@@ -160,8 +159,7 @@ const TEMPLATES = `
     </div>
 
     <!-- ============================== -->
-    <!-- 06. FEATURES (주요 특징) -->
-    <!-- JS에서 각 li에 margin-bottom: 8~12px 적용 전제 -->
+    <!-- 06. FEATURES (주요 특징) 최대 5개-->
     <!-- ============================== -->
     <div style="margin-top: 34px;">
         <div
@@ -307,13 +305,13 @@ const TEMPLATES = `
     <div
         style="margin-top: 48px; padding-top: 22px; border-top: 1px solid #eee;"
     >
-        <div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">
             Culture Fleet • 문화(Culture)를 무역하는 함대(Fleet)
         </div>
-        <div style="font-size: 14px; color: #555;">
-            전 세계 다양한 문화를 제품의 형태로 전달하는 컬처플릿은<br />
-            신뢰할 수 있는 해외 판매처에서만 제품을 엄선합니다.<br />
-            고객에게 정확한 정보와 높은 신뢰를 제공하는 것이 우리의 첫 번째 가치입니다.
+        <div style="font-size: 14px; color: #555; line-height: 1.6;">
+            컬처플릿은 전 세계의 다양한 문화를 전달합니다.<br />
+            문화적 가치, 고품질, 재미 그리고 실용성을 기준으로 상품을 엄선하여,<br />
+						검증된 해외 판매처의 제품만을 선별해서 소개합니다.
         </div>
     </div>
 </div>
