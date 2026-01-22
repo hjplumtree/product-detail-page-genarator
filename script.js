@@ -133,9 +133,51 @@ class TemplateProcessor {
   init() {
     this.initTheme();
     this.initDynamicStyles();
+    this.initSectionCollapse();
+    this.initOutputTabs();
     this.loadDefaultContent();
     this.attachEventListeners();
     this.generatePreview();
+  }
+
+  // Initialize section collapse functionality
+  initSectionCollapse() {
+    const headers = document.querySelectorAll(".section-header");
+
+    headers.forEach((header) => {
+      header.addEventListener("click", () => {
+        const targetId = header.getAttribute("data-target");
+        const content = document.getElementById(targetId);
+
+        if (content) {
+          content.classList.toggle("collapsed");
+          header.classList.toggle("collapsed");
+        }
+      });
+    });
+  }
+
+  // Initialize output tabs functionality
+  initOutputTabs() {
+    const tabs = document.querySelectorAll(".output-tab");
+    const views = document.querySelectorAll(".output-view");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const targetTab = tab.getAttribute("data-tab");
+
+        // Remove active class from all tabs and views
+        tabs.forEach((t) => t.classList.remove("active"));
+        views.forEach((v) => v.classList.remove("active"));
+
+        // Add active class to clicked tab and corresponding view
+        tab.classList.add("active");
+        const targetView = document.getElementById(`${targetTab}-view`);
+        if (targetView) {
+          targetView.classList.add("active");
+        }
+      });
+    });
   }
 
   // Theme management
@@ -164,7 +206,13 @@ class TemplateProcessor {
   }
 
   updateThemeIcon(theme) {
-    const icon = this.elements.themeToggle?.querySelector(".theme-toggle-icon");
+    const text = this.elements.themeToggle?.querySelector(".theme-toggle-text");
+    const icon = this.elements.themeToggle?.querySelector(".theme-icon");
+
+    if (text) {
+      text.textContent = theme === "light" ? "Dark" : "Light";
+    }
+
     if (icon) {
       icon.textContent = theme === "light" ? "🌙" : "☀️";
     }

@@ -25,139 +25,156 @@
             class="theme-toggle"
             aria-label="Toggle dark mode"
           >
-            <span class="theme-toggle-icon">🌙</span>
+            <span class="theme-icon">🌙</span>
+            <span class="theme-toggle-text">Dark</span>
           </button>
         </div>
       </div>
     </header>
 
     <main class="container">
-      <!-- Image Input Panel -->
-      <div class="panel image-panel">
-        <div class="panel-header">
-          <h3>📷 Product Images</h3>
+      <!-- Left Sidebar: Inputs -->
+      <aside class="sidebar">
+        <!-- JSON Data Section -->
+        <section class="input-section">
+          <div class="section-header" data-target="data-content">
+            <h3>JSON Data</h3>
+            <span class="collapse-indicator">▼</span>
+          </div>
+          <div class="section-content" id="data-content">
+            <textarea
+              id="data-editor"
+              class="editor compact"
+              placeholder="Product data in JSON format"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Product Images Section -->
+        <section class="input-section">
+          <div class="section-header" data-target="images-content">
+            <h3>Product Images</h3>
+            <span class="collapse-indicator">▼</span>
+          </div>
+          <div class="section-content" id="images-content">
+            <div class="input-group">
+              <label for="main_image">Main Image</label>
+              <input
+                type="url"
+                id="main_image"
+                class="image-input"
+                placeholder="https://example.com/main.jpg"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="image_overview_01">Overview 1</label>
+              <input
+                type="url"
+                id="image_overview_01"
+                class="image-input"
+                placeholder="https://example.com/overview1.jpg"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="image_overview_02">Overview 2</label>
+              <input
+                type="url"
+                id="image_overview_02"
+                class="image-input"
+                placeholder="https://example.com/overview2.jpg"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="image_details_01">Detail 1</label>
+              <input
+                type="url"
+                id="image_details_01"
+                class="image-input"
+                placeholder="https://example.com/detail1.jpg"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="image_details_02">Detail 2</label>
+              <input
+                type="url"
+                id="image_details_02"
+                class="image-input"
+                placeholder="https://example.com/detail2.jpg"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="image_specs">Specs</label>
+              <input
+                type="url"
+                id="image_specs"
+                class="image-input"
+                placeholder="https://example.com/specs.jpg"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Template Section -->
+        <section class="input-section">
+          <div class="section-header" data-target="template-content">
+            <h3>Template</h3>
+            <span class="collapse-indicator">▼</span>
+          </div>
+          <div class="section-content" id="template-content">
+            <textarea
+              id="template-editor"
+              class="editor compact"
+              placeholder="HTML template with {{placeholder}} syntax"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="sidebar-actions">
+          <button id="merge-btn" class="btn btn-primary">
+            Generate Preview
+          </button>
+          <button id="reset-btn" class="btn btn-secondary">Reset All</button>
+        </div>
+      </aside>
+
+      <!-- Right Panel: Output -->
+      <main class="output-panel">
+        <div class="output-header">
+          <h2>Output</h2>
+          <div class="output-tabs">
+            <button class="output-tab active" data-tab="preview">
+              Preview
+            </button>
+            <button class="output-tab" data-tab="code">HTML Code</button>
+          </div>
         </div>
 
-        <div class="image-inputs">
-          <div class="input-group">
-            <label for="main_image">Main Image</label>
-            <input
-              type="url"
-              id="main_image"
-              class="image-input"
-              placeholder="https://example.com/main.jpg"
-            />
+        <div class="output-content">
+          <div class="output-view active" id="preview-view">
+            <iframe
+              id="preview"
+              class="preview-frame"
+              title="Product Preview"
+            ></iframe>
           </div>
 
-          <div class="input-group">
-            <label for="image_overview_01">Overview Image 1</label>
-            <input
-              type="url"
-              id="image_overview_01"
-              class="image-input"
-              placeholder="https://example.com/overview1.jpg"
-            />
-          </div>
-
-          <div class="input-group">
-            <label for="image_overview_02">Overview Image 2</label>
-            <input
-              type="url"
-              id="image_overview_02"
-              class="image-input"
-              placeholder="https://example.com/overview2.jpg"
-            />
-          </div>
-
-          <div class="input-group">
-            <label for="image_details_01">Detail Image 1</label>
-            <input
-              type="url"
-              id="image_details_01"
-              class="image-input"
-              placeholder="https://example.com/detail1.jpg"
-            />
-          </div>
-
-          <div class="input-group">
-            <label for="image_details_02">Detail Image 2</label>
-            <input
-              type="url"
-              id="image_details_02"
-              class="image-input"
-              placeholder="https://example.com/detail2.jpg"
-            />
-          </div>
-
-          <div class="input-group">
-            <label for="image_specs">Specs Image</label>
-            <input
-              type="url"
-              id="image_specs"
-              class="image-input"
-              placeholder="https://example.com/specs.jpg"
-            />
+          <div class="output-view" id="code-view">
+            <textarea
+              id="code-viewer"
+              class="code-output"
+              readonly
+              placeholder="Generated HTML code will appear here"
+            ></textarea>
+            <button id="copy-btn" class="btn btn-copy">Copy HTML</button>
           </div>
         </div>
-      </div>
-
-      <!-- Editor Panel -->
-      <div class="panel">
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="template">Template</button>
-          <button class="tab-btn" data-tab="data">JSON Data</button>
-        </div>
-
-        <div class="tab-content active" id="template-tab">
-          <textarea
-            id="template-editor"
-            class="editor"
-            placeholder="HTML template with {{placeholder}} syntax"
-          ></textarea>
-        </div>
-
-        <div class="tab-content" id="data-tab">
-          <textarea
-            id="data-editor"
-            class="editor"
-            placeholder="Product data in JSON format"
-          ></textarea>
-        </div>
-
-        <div class="controls">
-          <button id="merge-btn" class="btn btn-success">Generate</button>
-          <button id="reset-btn" class="btn btn-danger">Reset</button>
-        </div>
-      </div>
-
-      <!-- Preview Panel -->
-      <div class="panel">
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="preview">Preview</button>
-          <button class="tab-btn" data-tab="code">HTML Code</button>
-        </div>
-
-        <div class="tab-content active" id="preview-tab">
-          <iframe
-            id="preview"
-            class="preview-frame"
-            title="Product Preview"
-          ></iframe>
-        </div>
-
-        <div class="tab-content" id="code-tab">
-          <textarea
-            id="code-viewer"
-            class="editor"
-            readonly
-            placeholder="Generated HTML code will appear here"
-          ></textarea>
-        </div>
-
-        <div class="controls">
-          <button id="copy-btn" class="btn btn-success">Copy HTML</button>
-        </div>
-      </div>
+      </main>
     </main>
 
     <!-- =============================================== -->
