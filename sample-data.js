@@ -7,18 +7,6 @@ const SAMPLE_DATA = {
   brand: "워크맨",
   category: "",
 
-  main_image:
-    "[https://workman.jp/img/goods/L/67310_t1.jpg](https://workman.jp/img/goods/L/67310_t1.jpg)",
-  image_overview_01:
-    "[https://workman.jp/img/goods/15/67310_c1.jpg](https://workman.jp/img/goods/15/67310_c1.jpg)",
-  image_overview_02:
-    "[https://workman.jp/img/goods/28/67310_d13.jpg](https://workman.jp/img/goods/28/67310_d13.jpg)",
-  image_details_01:
-    "[https://workman.jp/img/goods/17/67310_d2.jpg](https://workman.jp/img/goods/17/67310_d2.jpg)",
-  image_details_02:
-    "[https://workman.jp/img/goods/21/67310_d6.jpg](https://workman.jp/img/goods/21/67310_d6.jpg)",
-  image_specs: "",
-
   product_intro: "3D 디지털 프린트로 빈티지 데님 질감을 구현한 레인수트.",
   key_value_list: [
     "신축성 좋은 스트레치 소재로 활동 시에도 편안한 착용감",

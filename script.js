@@ -114,6 +114,15 @@ class TemplateProcessor {
       toggleLabel: document.querySelector(".toggle-label"),
       tabBtns: document.querySelectorAll(".tab-btn"),
       tabContents: document.querySelectorAll(".tab-content"),
+      // Image inputs
+      imageInputs: {
+        main_image: document.getElementById("main_image"),
+        image_overview_01: document.getElementById("image_overview_01"),
+        image_overview_02: document.getElementById("image_overview_02"),
+        image_details_01: document.getElementById("image_details_01"),
+        image_details_02: document.getElementById("image_details_02"),
+        image_specs: document.getElementById("image_specs"),
+      },
     };
 
     this.generatedHTML = "";
@@ -181,13 +190,13 @@ class TemplateProcessor {
     // Tab switching
     this.elements.tabBtns.forEach((btn) => {
       btn.addEventListener("click", (e) =>
-        this.switchTab(e.target.dataset.tab)
+        this.switchTab(e.target.dataset.tab),
       );
     });
 
     // Buttons
     this.elements.mergeBtn.addEventListener("click", () =>
-      this.generatePreview()
+      this.generatePreview(),
     );
     this.elements.resetBtn.addEventListener("click", () => this.resetContent());
     this.elements.copyBtn.addEventListener("click", () => this.copyHTML());
@@ -195,24 +204,29 @@ class TemplateProcessor {
     // Theme toggle
     if (this.elements.themeToggle) {
       this.elements.themeToggle.addEventListener("click", () =>
-        this.toggleTheme()
+        this.toggleTheme(),
       );
     }
 
     // Dynamic style toggle
     if (this.elements.dynamicStyleToggle) {
       this.elements.dynamicStyleToggle.addEventListener("change", () =>
-        this.toggleDynamicStyles()
+        this.toggleDynamicStyles(),
       );
     }
 
     // Auto-generate on content change
     this.elements.templateEditor.addEventListener("input", () =>
-      this.generatePreview()
+      this.generatePreview(),
     );
     this.elements.dataEditor.addEventListener("input", () =>
-      this.generatePreview()
+      this.generatePreview(),
     );
+
+    // Image inputs auto-update
+    Object.values(this.elements.imageInputs).forEach((input) => {
+      input.addEventListener("input", () => this.generatePreview());
+    });
   }
 
   // Tab management
@@ -238,11 +252,49 @@ class TemplateProcessor {
       const template = this.elements.templateEditor.value;
       const data = JSON.parse(this.elements.dataEditor.value);
 
-      const html = this.processTemplate(template, data);
+      // Merge image data with JSON data
+      const imageData = this.getImageData();
+      const mergedData = { ...data, ...imageData };
+
+      const html = this.processTemplate(template, mergedData);
       this.updatePreview(html);
     } catch (error) {
       this.showError(`JSON Error: ${error.message}`);
     }
+  }
+
+  // Get image data from input fields
+  getImageData() {
+    const imageData = {};
+
+    // Get individual image URLs
+    Object.entries(this.elements.imageInputs).forEach(([key, input]) => {
+      imageData[key] = input.value || "";
+    });
+
+    // Generate composite placeholders for template
+    imageData.image_overview = this.generateImageHTML([
+      imageData.image_overview_01,
+      imageData.image_overview_02,
+    ]);
+
+    imageData.image_details = this.generateImageHTML([
+      imageData.image_details_01,
+      imageData.image_details_02,
+    ]);
+
+    return imageData;
+  }
+
+  // Generate HTML for multiple images
+  generateImageHTML(imageUrls) {
+    return imageUrls
+      .filter((url) => url && url.trim())
+      .map(
+        (url) =>
+          `<img src="${url}" style="width: 100%; border-radius: 6px; margin-bottom: 10px" />`,
+      )
+      .join("\n");
   }
 
   processTemplate(template, data) {
